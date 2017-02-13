@@ -1,0 +1,54 @@
+Dumitrache Daniela Andreea
+321 CB
+
+	Pentru transformare se vor construi n*k variabile, unde n = numarul de 
+noduri din graf. Astfel, putem spune ca fiecarui nod ii asociem k variabile.
+Nodului i din graf ii corespund variabilele Xi, Xn+i ... Xn*(k-1)+i.
+	Transformarea are doua parti componente.
+	Prima este construita astfel: intre fiecare doua variabile dintr-o 
+"versiune" (adica de la 1 la n, de la n+1 la 2*n ... (k-1)*n +1 pana la k*n), 
+vom alcatui cate o clauza de forma: (~Xi V ~Xj) unde i = n*l+1:(l+1)*n-1 si 
+j = i+1, (l+1)*n, cu l = 0: k-1.
+	A doua parte consta in: Pentru fiecare muchie din graf, se va construi
+o clauza cu toate variabile asociate nodurilor din muchie, legate intre ele prin V. 
+Toate clauzele vor fi legate intre ele prin ^.
+	Scopul primei clauze este sa ne asiguram ca nu poate sa existe mai mult
+de o variabile adevarata intr-o versiune (altfel clauzele nu vor fi satisfacute)
+=> se aleg doar k varabile adevarate din cele n*k.
+	Prin a doua clauza asiguram existenta k-vertex-coverului: daca cele
+k variabile care sunt adevarate nu corepsund nodurilor din vertex, atunci ar
+exista cel putin o muchie pentru care nodurile componente au toate variabilele
+asociate lor setate pe fals, deci clauza corespunzatoare muchiei ar deveni falsa.
+=> cele k variabile setate drept true trebuie sa fie corespunzatoare celor
+k noduri din vertex.
+
+	"=>" daca k-vertex-cover este adevarata, atunci stim ca exista o acoperire de
+dimensiune k, astfel incat cele k noduri alese sa acopere toate muchiile.
+Deci, exista sigur o interpretare care va satisface toate clauzele formulei generate :
+Conform constructiei transformarii, cel mult o variabila din fiecare versiune poate sa fie
+adevarta pentru ca prima parte a formulei sa fie satisfiabila => alegem maxim k variabile
+adevarate. Aceste k variabile corespund celor k noduri din vertex.
+Deaorece toate muchiile  sunt acoperite prin cele k noduri alese, -> si a doua
+parte a formulei este satisfiabila -> sat este adevarata
+
+	"<=" daca sat este adevarta, inseamna ca fiecare clauza este satisfacuta.
+Deci in fiecare clauza din a doua parte a formulei trebuie sa se regaseasca cel putin una 
+dintre cele k variabile care trebuie sa fie adevarate din prima parte a formulei, 
+pentru ca aceasta sa fie satisfiaila. Am ales deci k variabile care acopera toate
+muchiile grafului => exista un cover de dimensiune k -> K-vertex-cover este adevarata.
+
+	Am implementat astfel: Am citit din fisierul de intrare
+numarul de noduri, nV, si dimensiunea acoperirii, k. 
+	Am construit prima parte a formulei in modul urmator: am simulat 
+versiunile diferite de noduri, construind indicii pentru fiecare variabila folosind
+2 for-uri, si am alcatuit cate o clauza, precum cea explicata din formula, punand un 
+V intre variabila mea din versiunea curenta si toate variabilele care urmeaza dupa ea, 
+tot din versiunea curenta.
+	Apoi am continuat citirea linie cu linie si pentru nodurile dintr-o
+muchie am construit clauzele corespunzatoare partii a doua a formulei.
+Am generat toate variabilele corespunzatoare nodurilor care alcatuiesc muchia
+si le-am pus intr-o clauza caracteristica muchiei.
+	Am concatat la fiecare pas noua clauza obtinuta unei formule finale 
+(String-ul res). Am ales sa fac acest lucru deoarece modul meu de scriere al
+clauzelor  ar mai fi pus un semn de ^ la final, care trebuie eliminat inainte
+ de a scrie rezultatul in fisier. 
